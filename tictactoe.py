@@ -1,5 +1,7 @@
 game = [[0, 0, 0],
         [0, 0, 0],
         [0, 0, 0],]
-for row in game:
-    print(row)
+
+print('   a  b  c')
+for count, row in enumerate(game):
+    print(count, row)
