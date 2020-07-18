@@ -4,3 +4,8 @@ def add(x, y):
 
 print(add(5, 10))
 print(add("abc", "lol"))
+
+if name == 'Alice':
+    print('hello, Alice')
+
+name = karla
