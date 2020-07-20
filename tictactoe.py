@@ -14,6 +14,5 @@ def game_board(game_map, player=0, row=0, column=0, just_display=False):
 
 game = game_board(game, just_display=True)
 game = game_board(game, 1, 2, 1)
-#game[0][1] = 1
 
-#game_board(1, 2, 0)
+
