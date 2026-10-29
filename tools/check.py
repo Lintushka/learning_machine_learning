@@ -9,8 +9,8 @@ import re
 import sys
 from pathlib import Path
 
-LONG = {"ru": 25, "en": 28}          # слов в предложении — уже тяжело
-TARGET = {"ru": (9, 14), "en": (9, 13)}
+LONG = {"ru": 40, "en": 40}          # слов: такую фразу проверяем на читаемость
+TARGET = {"ru": (12, 17), "en": (15, 19)}  # литературная проза, весь текст с диалогами
 
 KANCELYARIT = [
     r"\bявля(?:ет|ют)ся\b", r"\bосуществ\w+", r"\bпроизв(?:ести|одить|ёл|ел\w*)\b",
@@ -188,8 +188,12 @@ def report(path: Path):
     print(f"\n=== {path} ===")
     lo, hi = TARGET[lang]
     avg = total / max(len(lens), 1)
+    sd = (sum((n - avg) ** 2 for n in lens) / max(len(lens), 1)) ** 0.5
+    short = 100 * sum(n <= 5 for n in lens) / max(len(lens), 1)
+    longp = 100 * sum(n >= 30 for n in lens) / max(len(lens), 1)
     print(f"Слов: {total}  Предложений: {len(lens)}  Средняя длина: {avg:.1f} "
-          f"(ориентир {lo}–{hi})  Диалог: {100 * dialog / total:.0f}% (ориентир 30–45%)")
+          f"(ориентир {lo}–{hi})  Разброс (CV): {sd / max(avg, 1):.2f} (не ниже 0,65)  "
+          f"Короткие ≤5: {short:.0f}%  Длинные ≥30: {longp:.0f}%  Диалог: {100 * dialog / total:.0f}%")
 
     long_ = [(n, s) for n, s in zip(lens, sents) if n > LONG[lang]]
     if long_:
