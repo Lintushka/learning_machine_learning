@@ -169,6 +169,13 @@ def repetition_report(text: str, lang: str):
         poss = len(re.findall(r"\b(?:her|his|their)\b", text, flags=re.I))
         comp = len(re.findall(r"\bas if\b|\bas though\b|\blike a\b", text, flags=re.I))
         name = len(re.findall(r"\bNatalie\b", text))
+    if lang == "ru":
+        narr_dash = sum(ln.count("—") for ln in text.split("\n")
+                        if ln.strip() and not ln.lstrip().startswith(("#", "—")))
+        out.append(f"\nТире в авторской речи: {narr_dash} (ориентир: только где требует грамматика, "
+                   f"не больше одного-двух на главу)")
+    else:
+        out.append(f"\nДлинные тире: {text.count('—') + text.count(' -- ')} (ориентир: ноль, редкий обрыв реплики «But—»)")
     out.append(f"\nНа 1000 слов: имя героини {1000 * name / n_words:.0f}, "
                f"притяжательные местоимения {1000 * poss / n_words:.0f}, "
                f"сравнения-«будто» {1000 * comp / n_words:.0f}")
